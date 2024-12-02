@@ -7,23 +7,53 @@ function App() {
 
   const handleAddHabit = (habitName) => {
     // TODO: write code to add a new habit here
+    const trimmedHabitName = (habitName || "").trim();
+
+    if (trimmedHabitName === "") {
+      alert("Habit name cannot be empty.");
+      return;
+    }
+
+    const newHabit = {
+      id: Date.now(),
+      habitName: trimmedHabitName,
+      completed: false,
+    };
+
+    setHabits((prevHabits) => [...prevHabits, newHabit]);
   };
 
   const handleToggleHabit = (id) => {
     // TODO: write code to toggle a habit's status
+    setHabits((prevHabits) =>
+      prevHabits.map((habit) =>
+        habit.id === id ? { ...habit, completed: !habit.completed } : habit
+      )
+    );
   };
+
 
   const handleDeleteHabit = (id) => {
     // TODO: write code to delete a habit
+    setHabits((prevHabits) => prevHabits.filter((habit) => habit.id !== id));
+
   };
 
   return (
     <div>
       <h1>Habit Tracker</h1>
       {/*TODO: add a form to add a new habit*/}
+      <AddHabitForm onAddHabit={handleAddHabit} />
       {/*TODO: add a list of habits*/}
+      <HabitList
+        habits={habits}
+        onToggleHabit={handleToggleHabit}
+        onDeleteHabit={handleDeleteHabit} />
     </div>
   );
 }
 
 export default App;
+
+
+
